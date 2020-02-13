@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <style>
+    #hello,#str-length{
+      color: #ff0000;
+    }
+    #plus>input{
+        width: 150px;
+    }
+  </style>
+</head>
+
+<body>
+   <div id='plus'>
+    <input type="text" value="1">+
+    <input type="text" value="2">=
+    <input type="text">
+    <button type="button" onclick="plus()">计算</button>
+  </div>
+
+  <script>
+    window.onload = function () {
+      try {
+        let ffi = require('ffi-napi');
+        window.Dll = ffi.Library('dll/MyDLL.dll', {
+          'Add': ['float', ['float', 'float']],
+          'Hello': ['string', []],
+          'StrLength': ['int', ['string']]
+        })
+        console.log('fii.Library result:',Dll);
+      } catch (error) {
+        console.error('ffi.Library', error);
+      }
+    }
+    function plus() {
+      let inputs = document.getElementById('plus').getElementsByTagName('input');
+      let a = inputs[0].value, b = inputs[1].value;
+      let sum = Dll.HelloForm(a);
+      inputs[2].value = sum;
+    }
+
+  </script>
+</body>
+
+</html>
